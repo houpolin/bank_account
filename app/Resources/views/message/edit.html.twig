@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}留言板{{ title }}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="row">
+            <h1>留言板</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-10">
+            {% import 'forms.html.twig' as forms %}
+            <form action='{{ path("message_update",{'id':message.id}) }}' method="POST">
+                <input type="hidden" name="_method" value="PUT" />
+                <div class="form-group">
+                    <label for="title">ID</label>
+                    {{ forms.input('form-control', 'id', message.id, null, null, 'readonly') }}
+                </div>
+                <div class="form-group">
+                    <label for="title">標題</label>
+                    {{ forms.input('form-control', 'title', message.title) }}
+                </div>
+                <div class="form-group">
+                    <label for="content">內容</label>
+                    {{ forms.textarea('form-control', 'content', message.content) }}
+                </div>
+                    {{ forms.input('btn btn-primary', 'submit', '修改', 'submit') }}
+                <a href="{{ path('message') }}"><button type="button" class="btn btn-warning">返回</button></a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

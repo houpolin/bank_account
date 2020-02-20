@@ -1,0 +1,8 @@
+bank:
+    resource: "@BankBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+Msg:
+    resource: '@MsgBundle/Controller/'
+    type: annotation

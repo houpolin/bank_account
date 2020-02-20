@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}留言板{{ title }}{% endblock %}
+{% block body %}
+<table class="table">
+    <thead>
+        <tr align="center">
+            <th colspan="5"><h1>留言板</h1></th>
+            <th><a href="{{ path('message') }}"><button type="button" class="btn btn-warning">返回</button></a></th>
+        </tr>
+        <tr>
+            <th scope="col" width="8%">編號</th>
+            <th scope="col" width="10%">標題</th>
+            <th scope="col" width="40%">內容</th>
+            <th scope="col" width="15%">更新日期</th>
+            <th scope="col" width="15%">發佈日期</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ message.id }}</td>
+            <td>{{ message.title }}</td>
+            <td>{{ message.content }}</td>
+            <td>{{ message.updateTime }}</td>
+            <td>{{ message.buildTime }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+        <tr align="center">
+            <th colspan="4"><h1>回覆區</h1></th>
+        </tr>
+{% if replys %}
+        <tr>
+            <th scope="col" width="8%">編號</th>
+            <th scope="col" width="40%">內容</th>
+            <th scope="col" width="15%">回覆日期</th>
+            <th scope="col" width="5%">刪除</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for replys in replys %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ replys.content }}</td>
+            <td>{{ replys.buildTime }}</td>
+                    {% import 'forms.html.twig' as forms %}
+                    <form action='{{ path("reply_delete", {'id':replys.id}) }}' method="post">
+                        <input type="hidden" name="_method" value="DELETE" />
+                        <td>{{ forms.input('btn btn-danger', 'submit', '刪除', 'submit') }}</td>
+                    </form>
+        </tr>
+    {% endfor %}
+{% else %}
+        <tr align='center'>
+            <td colspan='4'><h2>沒有回覆</h2></td>
+        </tr>
+{% endif %}
+        <tr>
+            {% import 'forms.html.twig' as forms %}
+            <form action='{{ path("reply_create", {'id':message.id}) }}' method="post">
+                <td>#</td>
+                <td>{{ forms.textarea('form-control', 'content') }}</td>
+                <td>{{ forms.input('btn btn-primary', 'submit', '新增', 'submit') }}</td>
+                <td>
+                </td>
+            </form>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

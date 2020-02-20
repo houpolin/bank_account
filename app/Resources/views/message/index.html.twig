@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block title %}留言板{{ title }}{% endblock %}
+{% block body %}
+
+<table class="table">
+    <thead>
+        <tr align="center">
+            <th colspan="6"><h1>留言板</h1>全部有{{ total }}則留言</th>
+        </tr>
+        <tr align="center">
+            <td colspan="6">
+                <a href="{{ path('batch_create') }}"><button type="button" class="btn btn-success" id="batch_create">批次<br>新增</button></a>
+                <a href="{{ path('batch_update') }}"><button type="button" class="btn btn-primary" id="batch_update">批次<br>修改</button></a>
+                <a href="{{ path('batch_delete') }}"><button type="button" class="btn btn-danger" id="batch_delete">批次<br>刪除</button></a>
+            </td>
+        </tr>
+        <tr>
+            <th scope="col" width="5%"></th>
+            <th scope="col" width="8%">編號</th>
+            <th scope="col" width="10%">標題</th>
+            <th scope="col" width="40%">內容</th>
+            <th scope="col" width="5%"></th>
+            <th scope="col" width="5%">
+                <a href="{{ path('message_create') }}">
+                    <button type="button" class="btn btn-success">新增</button>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in data %}
+        <tr>
+            <td>
+                <a href="{{ path('reply', {'id':data.getId}) }}">
+                    <button type="button" class="btn btn-primary" id="batch_update">回覆</button>
+                </a>
+            </td>
+            <td>{{ data.getId }}</td>
+            <td>{{ data.getTitle }}</td>
+            <td>{{ data.getContent }}</td>
+            <td>
+                <a href="{{ path('message_update', {'id':data.getId}) }}">
+                    <button type="button" class="btn btn-info">修改</button>
+                </a>
+            </td>
+            <td>
+                {% import 'forms.html.twig' as forms %}
+                <form action='{{ path("message_delete", {'id':data.getId}) }}' method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ forms.input('btn btn-danger', 'submit', '刪除', 'submit') }}
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="6" align="center">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    {{ knp_pagination_render(data) }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(document).ready(function(){
+        $(".pagination .page a, .pagination .first a, .pagination .previous a, .pagination .next a, .pagination .last a, .pagination .current").addClass('btn btn-secondary').css({'color':'#fff'})
+
+    })
+</script>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name: value
+
+services:
+    BankService:
+        class: BankBundle\Service\BankService
+        arguments: ['@service_container']
+
+    LogService:
+        class: BankBundle\Service\LogService
+        arguments: ['@monolog.logger.command', '@logger']
